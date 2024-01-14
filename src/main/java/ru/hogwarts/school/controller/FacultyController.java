@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
-
 import java.util.Collection;
 
 @RestController
@@ -25,31 +24,35 @@ public class FacultyController {
         }
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAllFacultys(){
+    public ResponseEntity<Collection<Faculty>> getAllFacultys() {
         return ResponseEntity.ok(facultyService.getAllFacultys());
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty){
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
         return facultyService.createFaculty(faculty);
     }
+
     @PutMapping
-    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty){
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.editFaculty(faculty);
-        if(foundFaculty==null){
+        if (foundFaculty == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
+
     @DeleteMapping("{id}")
-    public Faculty deleteFaculty(@PathVariable long id){
-        return facultyService.deleteFaculty(id);
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable long id) {
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("color")
     public Collection<Faculty> getColorFaculty(@PathVariable String color) {
-       return facultyService.getColorFacultys(color);
+        return facultyService.getColorFacultys(color);
     }
 
 }
