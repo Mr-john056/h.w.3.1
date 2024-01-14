@@ -1,47 +1,42 @@
 package ru.hogwarts.school.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
+
 @Service
+@AllArgsConstructor
 public class StudentService {
-    private final HashMap<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
+
+    private StudentRepository repository;
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+        return repository.save(student);
     }
 
     public Student findStudent(long id) {
-        return students.get(id);
+        return repository.findById(id).orElseThrow();
     }
 
     public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(), student);
-            return student;
-        }
-        return null;
+        return repository.save(student);
     }
 
-    public Student deleteStudent(long id) {
-        return students.remove(id);
+    public void deleteStudent(Long id) {
+        repository.deleteById(id);
     }
 
-    public Collection<Student> getAllStudents() {
-        return students.values();
+    public Collection<Student> getAllStudentsByAge(int age) {
+        return repository.findByAge(age);
     }
 
     public Collection<Student> getAgeStudent(int age) {
-
-        return getAllStudents().stream()
-                .filter(e -> e.getAge() == age)
-                .collect(Collectors.toList());
+        return repository.findAll();
     }
 }
