@@ -3,11 +3,12 @@ package ru.hogwarts.school.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import java.util.Set;
+
 @Service
 @AllArgsConstructor
 
@@ -37,5 +38,9 @@ public class FacultyService {
 
     public Collection<Faculty> getColorFacultys(String color) {
         return repository.findByColor(color);
+    }
+
+    public Set<Student> findStudentByFaculty (Long id) {
+        return  repository.getReferenceById(id).getStudents();
     }
 }
