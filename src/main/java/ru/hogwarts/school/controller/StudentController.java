@@ -11,6 +11,7 @@ import java.util.List;
 @RequestMapping("/student")
 @RestController
 
+
 public class StudentController {
     private final StudentService studentService;
 
@@ -25,6 +26,7 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
+
     }
 
     @GetMapping("/{studentId}/faculty")
