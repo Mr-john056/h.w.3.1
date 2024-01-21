@@ -1,45 +1,59 @@
 package ru.hogwarts.school.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class StudentService {
+    private final StudentRepository studentRepository;
 
-    private StudentRepository repository;
-
-    public Student createStudent(Student student) {
-        return repository.save(student);
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public Student findStudent(long id) {
-        return repository.findById(id).orElseThrow();
+
+    public Student add(Student student) {
+        return studentRepository.save(student);
+
     }
 
-    public Student editStudent(Student student) {
-        return repository.save(student);
+    public void remove(Long id) {
+        studentRepository.deleteById(id);
+
     }
 
-    public void deleteStudent(Long id) {
-        repository.deleteById(id);
+    public Student find(Long id) {
+        return studentRepository.findById(id).get();
     }
 
-    public Collection<Student> getAllStudentsByAge(StudentService age) {
-        return repository.findByAge(age);
+    public Collection<Student> find(int age) {
+        return studentRepository.findStudentByAge(age);
+
     }
 
-    public Collection<Student> getAgeStudent(int age) {
-        return repository.findAll();
+
+    public Student change(Long id, Student student) {
+
+        return studentRepository.save(student);
+
+    }
+
+    public Collection<Student> findAll() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> findAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 
     public Faculty findFacultyByStudent(long id) {
-        return repository.getReferenceById(id).getFaculty();
-    }
+        return studentRepository.getReferenceById(id).getFaculty();
 
+    }
 }

@@ -1,46 +1,60 @@
 package ru.hogwarts.school.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+public class FacultyService implements FacultyServiceInt {
+    private final FacultyRepository facultyRepository;
 
-public class FacultyService {
-
-    private FacultyRepository repository;
-
-    public Faculty createFaculty(Faculty faculty) {
-        return (Faculty) repository.save(faculty);
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
     }
 
-    public Faculty findFaculty(long id) {
-        return (Faculty) repository.findById(id).orElseThrow();
+    public Faculty add(Faculty faculty) {
+        return facultyRepository.save(faculty);
+
     }
 
-    public Faculty editFaculty(Faculty faculty) {
-            return (Faculty) repository.save(faculty);
-        }
+    public void remove(Long id) {
+        facultyRepository.deleteById(id);
 
-    public void deleteFaculty(Long id) {
-        repository.deleteById(id);
     }
 
-    public Collection<Faculty> getAllFacultys() {
-        return repository.findAll();
+    public Faculty find(Long id) {
+        return facultyRepository.findById(id).get();
     }
 
-    public Collection<Faculty> getColorFacultys(String color) {
-        return repository.findByColor(color);
+    public Faculty change(Long id, Faculty faculty) {
+
+        return facultyRepository.save(faculty);
+
     }
 
-    public Set<Student> findStudentByFaculty (Long id) {
-        return  repository.getReferenceById(id).getStudents();
+    public Faculty findFacultyByColor(String color) {
+        return facultyRepository.findFacultyByColorIgnoreCase(color);
+
+
     }
+
+    public Faculty findFacultyByName(String name) {
+        return facultyRepository.findFacultyByNameIgnoreCase(name);
+
+
+    }
+
+    public Collection<Faculty> findAll() {
+        return facultyRepository.findAll();
+    }
+
+    public Collection<Student> findStudentByFaculty(long id) {
+        return facultyRepository.getReferenceById(id).getStudents();
+    }
+
 }
