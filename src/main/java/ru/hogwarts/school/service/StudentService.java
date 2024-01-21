@@ -3,45 +3,66 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
+import java.util.*;
+
 @Service
 public class StudentService {
-    private final HashMap<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
+    private final StudentRepository studentRepository;
 
-    public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public Student findStudent(long id) {
-        return students.get(id);
+
+    public Student add(Student student) {
+        return studentRepository.save(student);
+
     }
 
-    public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(), student);
-            return student;
-        }
-        return null;
+    public void remove(Long id) {
+        studentRepository.deleteById(id);
+
     }
 
-    public Student deleteStudent(long id) {
-        return students.remove(id);
+    public Student find(Long id) {
+        return studentRepository.findById(id).get();
     }
 
-    public Collection<Student> getAllStudents() {
-        return students.values();
+    public Collection<Student> find(int age) {
+        return studentRepository.findStudentByAge(age);
+
     }
 
-    public Collection<Student> getAgeStudent(int age) {
 
-        return getAllStudents().stream()
-                .filter(e -> e.getAge() == age)
-                .collect(Collectors.toList());
+    public Student change(Long id, Student student) {
+
+        return studentRepository.save(student);
+
+    }
+
+    public Collection<Student> findAll() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> findAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty findFacultyByStudent(long id) {
+        return studentRepository.getReferenceById(id).getFaculty();
+
+    }
+
+    public static interface FacultyServiceInt {
+        Faculty add(Faculty faculty);
+        void remove(Long id);
+        Faculty find(Long id);
+        Faculty change(Long id, Faculty faculty);
+        Faculty findFacultyByColor(String color);
+        Faculty findFacultyByName(String name);
+        Collection<Faculty> findAll();
+        Collection<Student> findStudentByFaculty(long id);
     }
 }
