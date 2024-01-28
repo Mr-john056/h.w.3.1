@@ -6,9 +6,11 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class FacultyService implements StudentService.FacultyServiceInt {
+public class FacultyService implements FacultyServiseInt {
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {

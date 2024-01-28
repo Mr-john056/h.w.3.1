@@ -6,11 +6,11 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RequestMapping("/student")
 @RestController
-
 
 public class StudentController {
     private final StudentService studentService;
@@ -26,7 +26,6 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
-
     }
 
     @GetMapping("/{studentId}/faculty")
@@ -40,17 +39,17 @@ public class StudentController {
     }
 
     @GetMapping("/age/{studentAge}")
-    public ResponseEntity<List<Student>> getStudent(@PathVariable int studentAge) {
-        if (studentService.find(studentAge).isEmpty()) {
+    public ResponseEntity<List<Student>> getStudentsByAge(@PathVariable int studentAge) {
+        if (studentService.findByAge(studentAge).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok((java.util.List<Student>) studentService.find(studentAge));
+        return ResponseEntity.ok((java.util.List<Student>) studentService.findByAge(studentAge));
 
     }
 
     @GetMapping()
-    public ResponseEntity getStudent(@RequestParam(required = false) Integer min,
-                                     @RequestParam(required = false) Integer max) {
+    public ResponseEntity<Collection<Student>> getStudent(@RequestParam(required = false) Integer min,
+                                                          @RequestParam(required = false) Integer max) {
         if (min != null && max != null && min > max) {
             return ResponseEntity.badRequest().build();
         }

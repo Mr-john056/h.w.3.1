@@ -20,21 +20,21 @@ import java.nio.file.Path;
 @RequestMapping("/avatars")
 @RestController
 public class AvatarController {
-    private AvatarService avatarService;
+    private final AvatarService avatarService;
 
     public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
     }
 
     @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+    public ResponseEntity<?> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/avatar-from-db")
     public ResponseEntity downloadAvatar(@PathVariable Long id) {
-        Avatar avatar = avatarService.findAvatar(id);
+        Avatar avatar = avatarService.findAvatarByStudentId(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getData().length);
@@ -43,7 +43,7 @@ public class AvatarController {
 
     @GetMapping(value = "/{id}/avatar-from-file")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
-        Avatar avatar = avatarService.findAvatar(id);
+        Avatar avatar = avatarService.findAvatarByStudentId(id);
         Path path = Path.of(avatar.getFilePath());
         try (InputStream is = Files.newInputStream(path);
              OutputStream os = response.getOutputStream();) {
@@ -53,5 +53,4 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
-
 }
