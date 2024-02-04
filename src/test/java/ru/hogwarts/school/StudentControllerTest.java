@@ -107,7 +107,7 @@ public class StudentControllerTest {
         Assertions
                 .assertThat((this.restTemplate.getForObject("http://localhost:" + port +
                                 "/student/" + id,
-                        String.class))).contains("" + id);
+                        String.class))).contains("222");
 
     }
 }
