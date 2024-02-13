@@ -48,6 +48,11 @@ public class FacultyController {
 
     }
 
+    @GetMapping("/getLongestNameFaculty")
+    public ResponseEntity<String> getLongestNameFaculty() {
+        return ResponseEntity.ok(facultyService.getLongestNameFaculty());
+    }
+
     @PostMapping
     public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
         Faculty createdFaculty = facultyService.add(faculty);

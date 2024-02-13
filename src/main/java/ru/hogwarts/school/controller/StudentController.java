@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/student")
 @RestController
 
+
 public class StudentController {
     private final StudentService studentService;
 
@@ -26,6 +27,7 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
+
     }
 
     @GetMapping("/{studentId}/faculty")
@@ -46,17 +48,30 @@ public class StudentController {
         return ResponseEntity.ok((java.util.List<Student>) studentService.findByAge(studentAge));
 
     }
+
     @GetMapping("/count")
-    public ResponseEntity<Integer> getStudentsByAge(){
+    public ResponseEntity<Integer> getStudentsByAge() {
         return ResponseEntity.ok(studentService.countStudents());
     }
+
     @GetMapping("/middleAge")
-    public ResponseEntity<Integer> getMiddleAgeStudents(){
+    public ResponseEntity<Integer> getMiddleAgeStudents() {
         return ResponseEntity.ok(studentService.middleAgeByStudents());
     }
+
     @GetMapping("/last5")
-    public ResponseEntity<List<Student>> getLastFiveStudentsById(){
+    public ResponseEntity<List<Student>> getLastFiveStudentsById() {
         return ResponseEntity.ok(studentService.getLastFiveStudents());
+    }
+
+    @GetMapping("/studentsBeginNameWithA")
+    public ResponseEntity<List<Student>> getStudentsBeginWithA() {
+        return ResponseEntity.ok(studentService.getStudentsBeginWithA());
+    }
+
+    @GetMapping("/middleAgeByStudentsByStream")
+    public ResponseEntity<Double> middleAgeByStudentsByStream() {
+        return ResponseEntity.ok(studentService.middleAgeByStudentsByStream());
     }
 
     @GetMapping()
@@ -91,5 +106,8 @@ public class StudentController {
     public ResponseEntity deleteStudent(@PathVariable Long studentId) {
         studentService.remove(studentId);
         return ResponseEntity.ok().build();
+
+
     }
+
 }

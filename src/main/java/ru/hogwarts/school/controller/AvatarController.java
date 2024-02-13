@@ -54,9 +54,20 @@ public class AvatarController {
             is.transferTo(os);
         }
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<Avatar>> getAllAvatars(@RequestParam("page") Integer pageNumber,
-                                                      @RequestParam("size") Integer pageSize){
-        return ResponseEntity.ok(avatarService.getAll(pageNumber,pageSize));
+                                                      @RequestParam("size") Integer pageSize) {
+        return ResponseEntity.ok(avatarService.getAll(pageNumber, pageSize));
+    }
+
+    @GetMapping("/summa")
+    public ResponseEntity<Integer> getTime() {
+        return ResponseEntity.ok(avatarService.summa());
+    }
+
+    @GetMapping("/summaParallel")
+    public ResponseEntity<Integer> getTimeParallel() {
+        return ResponseEntity.ok(avatarService.summaParallel());
     }
 }
