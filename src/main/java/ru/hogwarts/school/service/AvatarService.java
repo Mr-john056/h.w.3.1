@@ -92,7 +92,6 @@ public class AvatarService implements AvatarServiceInt {
 
         }
 
-
     }
 
     //метод пагинации (постраничного вывода) списка аватарок
@@ -123,6 +122,4 @@ public class AvatarService implements AvatarServiceInt {
         logger.info("time=" + (System.currentTimeMillis() - start));
         return sum1;
     }
-
-
 }
